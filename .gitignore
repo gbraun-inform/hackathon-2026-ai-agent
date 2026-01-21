@@ -9,9 +9,6 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# Claude Code
-.claude
-
 # IDE and editor files
 *.sublime-project
 *.sublime-workspace
