@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Quick validation script for skills - minimal version
 """
 
 import sys
+import io
 import os
 import re
 import yaml
 from pathlib import Path
+
+# Force UTF-8 output encoding on Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def validate_skill(skill_path):
     """Basic validation of a skill"""
@@ -19,7 +25,7 @@ def validate_skill(skill_path):
         return False, "SKILL.md not found"
 
     # Read and validate frontmatter
-    content = skill_md.read_text()
+    content = skill_md.read_text(encoding='utf-8')
     if not content.startswith('---'):
         return False, "No YAML frontmatter found"
 

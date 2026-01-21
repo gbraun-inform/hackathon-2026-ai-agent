@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Agent Packager - Creates a distributable agent package
 
@@ -11,9 +12,14 @@ Example:
 """
 
 import sys
+import io
 import zipfile
 from pathlib import Path
 from quick_validate_agent import validate_agent
+
+# Force UTF-8 output encoding on Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 def package_agent(agent_path, output_dir=None):

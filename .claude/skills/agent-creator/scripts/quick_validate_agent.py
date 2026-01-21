@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Quick validation script for agents - minimal version
 
@@ -12,10 +13,15 @@ Example:
 """
 
 import sys
+import io
 import os
 import re
 import yaml
 from pathlib import Path
+
+# Force UTF-8 output encoding on Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 def validate_agent(agent_path):
@@ -43,7 +49,7 @@ def validate_agent(agent_path):
 
     # Read and validate AGENT.md frontmatter
     try:
-        content = agent_md.read_text()
+        content = agent_md.read_text(encoding='utf-8')
     except Exception as e:
         return False, f"Failed to read AGENT.md: {e}"
 
@@ -111,7 +117,7 @@ def validate_agent(agent_path):
 
     # Validate agent.py is readable
     try:
-        agent_py.read_text()
+        agent_py.read_text(encoding='utf-8')
     except Exception as e:
         return False, f"Failed to read agent.py: {e}"
 

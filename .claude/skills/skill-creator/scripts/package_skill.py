@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Skill Packager - Creates a distributable .skill file of a skill folder
 
@@ -11,9 +12,14 @@ Example:
 """
 
 import sys
+import io
 import zipfile
 from pathlib import Path
 from quick_validate import validate_skill
+
+# Force UTF-8 output encoding on Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 def package_skill(skill_path, output_dir=None):
