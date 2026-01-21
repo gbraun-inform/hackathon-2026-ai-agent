@@ -13,10 +13,11 @@ Example:
 import sys
 import zipfile
 from pathlib import Path
+from typing import Optional
 from quick_validate import validate_skill
 
 
-def package_skill(skill_path, output_dir=None):
+def package_skill(skill_path: str | Path, output_dir: Optional[str] = None) -> Optional[Path]:
     """
     Package a skill folder into a .skill file.
 
@@ -82,7 +83,7 @@ def package_skill(skill_path, output_dir=None):
         return None
 
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         print("Usage: python utils/package_skill.py <path/to/skill-folder> [output-directory]")
         print("\nExample:")

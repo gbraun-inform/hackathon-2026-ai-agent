@@ -6,6 +6,7 @@ Quick validation script for skills - minimal version
 import re
 import sys
 from pathlib import Path
+from typing import Any, cast
 
 import yaml
 
@@ -33,7 +34,7 @@ def validate_skill(skill_path: str | Path) -> tuple[bool, str]:
 
     # Parse YAML frontmatter
     try:
-        frontmatter = yaml.safe_load(frontmatter_text)
+        frontmatter: dict[str, Any] = cast(dict[str, Any], yaml.safe_load(frontmatter_text))
         if not isinstance(frontmatter, dict):
             return False, "Frontmatter must be a YAML dictionary"
     except yaml.YAMLError as e:
