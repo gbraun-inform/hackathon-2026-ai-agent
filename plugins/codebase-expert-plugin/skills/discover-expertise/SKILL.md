@@ -1,6 +1,7 @@
 ---
 name: discover-expertise
 description: Discover and generate expertise files for new codebases. Use when a user wants to bootstrap expertise for an unfamiliar codebase or systematically document architectural patterns, domains, and design decisions. This skill guides a multi-phase workflow of interviewing, autonomous exploration, user feedback, and targeted expertise file generation.
+user-invocable: true
 ---
 
 # Discover Expertise
