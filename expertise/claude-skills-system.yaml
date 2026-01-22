@@ -1,0 +1,60 @@
+description: |
+  Claude Code skills system architecture and design patterns. Covers how skills
+  extend Claude's capabilities with specialized knowledge, workflows, and tools.
+  This expertise explains the skill structure, frontmatter format, progressive
+  disclosure pattern, and bundled resources (scripts, references, assets).
+
+category: "architecture"
+
+concepts:
+  - "Skills as modular extensions"
+  - "Progressive disclosure (metadata -> SKILL.md -> resources)"
+  - "Bundled resources (scripts, references, assets)"
+  - "YAML frontmatter with name and description"
+  - "Skill triggering and delegation"
+
+details: |
+  Skills System Architecture
+
+  Skills are self-contained packages that extend Claude's capabilities by providing
+  specialized knowledge, workflows, and tool integrations. They follow a three-level
+  progressive disclosure pattern to manage context efficiently.
+
+  Progressive Disclosure Levels:
+  1. Metadata (name + description) - Always in context (~100 words)
+  2. SKILL.md body - Loaded when skill triggers (<5k words recommended)
+  3. Bundled resources - Loaded as needed or executed without reading
+
+  Directory Structure:
+  - SKILL.md (required) - Frontmatter + instructions
+  - scripts/ (optional) - Executable code for deterministic tasks
+  - references/ (optional) - Documentation loaded as needed
+  - assets/ (optional) - Files used in output (templates, icons, etc.)
+
+  YAML Frontmatter:
+  Only two required fields:
+  - name: The skill identifier (kebab-case)
+  - description: What the skill does AND when to use it (primary triggering mechanism)
+
+  Key Design Principles:
+  - Concise is key - context window is a public good
+  - Default assumption: Claude is already smart, only add what's missing
+  - Match specificity to task fragility (high freedom for text, low for fragile operations)
+  - Keep SKILL.md under 500 lines, split into references if larger
+  - No extraneous files (no README, CHANGELOG, etc.)
+
+  Skill Creation Workflow:
+  1. Understand with concrete examples
+  2. Plan reusable contents (scripts, references, assets)
+  3. Initialize with init_skill.py
+  4. Edit SKILL.md and implement resources
+  5. Package with package_skill.py (includes validation)
+  6. Iterate based on usage
+
+  The skill-creator skill itself provides guidance for creating effective skills.
+
+related_files:
+  - ".claude/skills/**/*"
+  - ".claude/skills/skill-creator/SKILL.md"
+  - ".claude/skills/skill-creator/scripts/*.py"
+  - ".claude/skills/skill-creator/references/*.md"

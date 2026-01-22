@@ -1,0 +1,127 @@
+description: |
+  The expert agent system for brownfield codebase research. Includes the expert
+  agent (researcher), expertise-curator agent (maintainer), validate-expertise
+  skill (validator), and expertise YAML files (knowledge base). Forms a
+  self-improving knowledge-driven research system.
+
+category: "domain"
+
+concepts:
+  - "Expert agent (researcher)"
+  - "Expertise-curator agent (maintainer)"
+  - "Validate-expertise skill (validator)"
+  - "Expertise YAML files (mental model)"
+  - "Progressive expertise discovery"
+  - "Autonomous curation workflow"
+  - "Conceptual focus (not implementation)"
+
+details: |
+  Expert Agent System
+
+  A knowledge-driven expert agent system for researching brownfield codebases.
+  The system consists of three components working together:
+
+  1. Expert Agent (Researcher)
+  - Uses expertise YAML files as a mental model to guide research
+  - Discovers relevant expertise by reading descriptions first
+  - Explores codebase using expertise as guide
+  - Identifies new findings not covered in existing expertise
+  - Calls expertise-curator agent when discovering new knowledge
+  - Provides research reports with file:line references
+
+  Configuration:
+  - Model: opus (for deep research capability)
+  - Tools: Read, Grep, Glob, Bash, Task, Skill
+  - Permission mode: plan (read-only)
+  - Can delegate to expertise-curator via Task tool
+
+  2. Expertise-Curator Agent (Maintainer)
+  - Maintains and curates expertise YAML files
+  - Decides whether to create new file or update existing one
+  - Adds knowledge conceptually (patterns, not implementation)
+  - Removes duplicates and overly specific details
+  - Validates YAML structure using validate-expertise skill
+  - Returns updated expertise to expert agent
+
+  Configuration:
+  - Model: sonnet (efficient editing)
+  - Tools: Read, Write, Edit, Bash, Grep, Glob, Skill
+  - Permission mode: acceptEdits (auto-approve changes)
+  - Uses validate-expertise skill for validation
+
+  3. Validate-Expertise Skill (Validator)
+  - Validates expertise YAML file structure
+  - Checks required fields (description is mandatory)
+  - Validates YAML syntax
+  - Provides warnings for best practices
+  - Used by curator after creating/editing expertise
+
+  4. Expertise YAML Files (Knowledge Base)
+  - Stored in expertise/ directory at project root
+  - Act as "mental model" for the expert agent
+  - Only description field is mandatory
+  - Recommended fields: category, concepts, details, related_files
+  - Focus on concepts, patterns, and relationships (not code specifics)
+  - Version controlled with git to track knowledge evolution
+
+  Expertise YAML Structure:
+  - description: Brief overview (1-3 sentences) - helps expert decide relevance
+  - category: technical, domain, business-logic, architecture, integration
+  - concepts: List of key concepts covered
+  - details: Detailed explanation (conceptual level)
+  - related_files: File patterns (globs) related to this expertise
+  - [Additional custom fields as needed]
+
+  Agent Interaction Flow:
+  1. User asks expert agent a research question
+  2. Expert discovers expertise files (reads descriptions)
+  3. Expert selects relevant expertise and reads full content
+  4. Expert researches codebase using expertise as guide
+  5. Expert makes new findings not in existing expertise
+  6. Expert calls curator agent with findings
+  7. Curator decides: new file or update existing
+  8. Curator adds knowledge, curates content
+  9. Curator validates YAML structure
+  10. Curator returns to expert with updated knowledge
+  11. Expert provides research report citing updated expertise
+
+  Key Design Principles:
+  - Expertise files focus on "what" and "why", not "how" and "where"
+  - No specific line numbers, variable names, or implementation details
+  - Describe patterns and relationships, not code
+  - Keep files focused (50-300 lines per file)
+  - Use consistent terminology across files
+  - Expertise improves over time as more research is done
+
+  Curation Principles:
+  - Create new file: When topic is distinct, no existing file covers it
+  - Update existing: When knowledge complements existing expertise
+  - Remove duplicates: Don't repeat information across files
+  - Keep conceptual: Avoid implementation details that change frequently
+  - Validate always: Every file must pass YAML validation
+
+  File Naming:
+  - Use kebab-case: user-authentication-flow.yaml
+  - Be descriptive: api-error-handling.yaml (not auth.yaml)
+  - Use noun phrases: error-handling.yaml (not how-errors-work.yaml)
+
+  Progressive Disclosure:
+  Expert agent uses three-level discovery:
+  1. Quick scan: Read only description fields (find relevant expertise)
+  2. Deep dive: Read full content of selected expertise (understand concepts)
+  3. Research: Use expertise to guide codebase exploration
+
+  Benefits:
+  - Faster research with existing knowledge as starting point
+  - Self-improving system (expertise grows over time)
+  - Consistent knowledge capture (curator ensures quality)
+  - Autonomous workflow (expert can call curator directly)
+  - Version controlled knowledge (git tracks expertise evolution)
+
+related_files:
+  - "expertise/*.yaml"
+  - "expertise/README.md"
+  - "expertise/_template.yaml"
+  - ".claude/agents/expert.md"
+  - ".claude/agents/expertise-curator.md"
+  - ".claude/skills/validate-expertise/**/*"
