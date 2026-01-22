@@ -1,0 +1,17 @@
+{
+    "name": "moon-tools",
+    "owner":{
+        "name": "Team Moon"
+    },
+    "plugins": [
+        {
+            "name": "codebase-expert",
+            "source": "./plugins/codebase-expert-plugin",
+            "description": "Discover, curate, and manage expertise files for brownfield projects",
+            "version": "1.0.0",
+            "author": {
+                "name": "Team Moon"
+            }
+        }
+    ]    
+}
