@@ -1,0 +1,10 @@
+{
+  "name": "Codebase Expert",
+  "version": "1.0.0",
+  "description": "Discover, curate, and manage expertise files for brownfield projects",
+  "author": {
+    "name": "Team Moon"
+  },
+  "skills": "./.claude/skills/",
+  "agents": "./.claude/agents/"
+}
