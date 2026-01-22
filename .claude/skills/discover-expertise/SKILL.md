@@ -54,7 +54,7 @@ Use the interview responses to guide systematic codebase exploration. Spawn mult
    - Technology-specific patterns (based on tech stack)
    - Common architectural patterns
 
-2. **Exploration Categories** - Look for expertise in these areas (see references/exploration-categories.md for complete list):
+2. **Exploration Categories** - Look for expertise in these areas:
    - **Domain categories**: Authentication, data management, business logic, API integration, payment processing, etc.
    - **Architecture categories**: Layered architecture, event-driven patterns, API design, data access, caching, state management, etc.
    - **Technology stack categories**: Framework-specific patterns, database usage, build systems, testing patterns
@@ -120,43 +120,42 @@ If user selects "Adjust", follow up with a clarifying question about what should
 
 ### Phase 4: Generate Expertise Files
 
-For each approved expertise file, spawn a specialized subagent to deeply explore that specific area and generate the YAML file.
+For each approved expertise file, spawn a specialized subagent to deeply explore that specific area and use the expertise-curator skill to generate the YAML file.
 
 **Generation process:**
 
-1. **Spawn Expertise Generator** - For each approved expertise, use Task tool with subagent_type=general-purpose:
+1. **Spawn Expertise Explorer** - For each approved expertise, use Task tool with subagent_type=general-purpose:
 
 ```
-Prompt: "Generate expertise file for [domain/pattern name].
+Prompt: "Deeply explore [domain/pattern name] to discover expertise for the codebase.
 
-Context: [Summary of what was discovered about this area]
+Context: [Summary of what was discovered about this area during Phase 2]
 
-Requirements:
-1. Deep dive into [specific file patterns or areas]
-2. Identify concepts, architectural decisions, domain knowledge, integration patterns
-3. Follow the expertise YAML structure from assets/expertise-template.yaml
-4. See references/expertise-requirements.md for detailed structure requirements
-5. Write the expertise file to expertise/[name].yaml
+Task:
+1. Thoroughly explore [specific file patterns or areas] to understand:
+   - Key concepts and patterns
+   - Architectural decisions and their rationale
+   - Domain-specific knowledge and business rules
+   - Integration patterns with other parts of the codebase
 
-Focus on:
-- Key concepts and patterns (not implementation details)
-- Architectural decisions and rationale
-- Domain-specific knowledge
-- Integration patterns with other parts of codebase
-- Use glob patterns for related_files
+2. Focus on conceptual understanding, not implementation details:
+   - Good: "Uses JWT tokens for stateless authentication with refresh token rotation"
+   - Bad: "The verifyToken() function in auth.js line 42 checks JWT signatures"
 
-Generate a high-quality, conceptual expertise file that will help future exploration of this area."
+3. Once you have a deep understanding, use the /expertise-curator skill to generate the expertise file:
+   - Invoke: Skill tool with skill='expertise-curator'
+   - Provide the expertise-curator with:
+     * Context about what you're documenting
+     * Your findings (concepts, decisions, domain knowledge, patterns)
+     * Relevant file patterns
+     * Recommendation for filename: expertise/[name].yaml
+
+The expertise-curator will decide whether to create a new file or update an existing one, and will generate the properly structured YAML."
 ```
 
-2. **Run Generators in Parallel** - Launch multiple Task calls in a SINGLE message for efficiency
+2. **Run Explorers in Parallel** - Launch multiple Task calls in a SINGLE message for efficiency
 
-3. **Validate Generated Files** - After generation, use the validate-expertise skill to check each file:
-   ```
-   Skill: validate-expertise
-   Args: expertise/[name].yaml
-   ```
-
-4. **Report Results** - Summarize what was generated:
+3. **Report Results** - After all subagents complete, summarize what was generated:
    ```markdown
    ## Generated Expertise Files
 
@@ -165,7 +164,7 @@ Generate a high-quality, conceptual expertise file that will help future explora
    - `expertise/payment-processing.yaml` - Stripe integration patterns
    - `expertise/layered-architecture.yaml` - Controller/Service/Repository pattern
 
-   All files validated successfully.
+   All files have been curated and validated by the expertise-curator skill.
    ```
 
 ## Guidelines
@@ -188,22 +187,17 @@ Generate a high-quality, conceptual expertise file that will help future explora
 - Phase 4: Generate multiple expertise files in parallel
 - This significantly speeds up the workflow
 
-### Validate Everything
+### Validation Handled by Curator
 
-- Use validate-expertise skill after generating each file
-- Fix any validation errors before moving to next file
-- Ensure files match the requirements in references/expertise-requirements.md
+- The expertise-curator skill automatically validates generated files
+- It ensures proper YAML structure and completeness
+- Any validation errors are caught and fixed during generation
 
 ## Resources
 
-### References
-
-- **expertise-requirements.md** - Detailed YAML structure requirements for expertise files
-- **exploration-categories.md** - Categories and patterns to look for during exploration
-
 ### Assets
 
-- **expertise-template.yaml** - Template structure for generating expertise files
+- **expertise-template.yaml** - Template structure for generating expertise files (used by expertise-curator skill)
 
 ## Example Usage
 
@@ -213,8 +207,7 @@ Generate a high-quality, conceptual expertise file that will help future explora
 1. Interview: Ask about domains (products, cart, checkout, etc.), architecture (microservices? monolith?), tech stack
 2. Explore: Spawn parallel explorers for product catalog, shopping cart, payment processing, user management, API patterns
 3. Present: Show discovered expertise areas, get feedback on which to generate
-4. Generate: Create approved expertise files with deep exploration of each area
-5. Validate: Run validate-expertise on all generated files
-6. Report: Summary of created expertise files
+4. Generate: Spawn subagents to deeply explore each area and use /expertise-curator skill to generate YAML files
+5. Report: Summary of created expertise files (validated by expertise-curator)
 
 **Result:** A bootstrapped expertise system ready for use with the expert agent.
