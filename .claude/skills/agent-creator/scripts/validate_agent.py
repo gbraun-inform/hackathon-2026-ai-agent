@@ -70,7 +70,7 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
         (is_valid, messages) where messages are warnings and errors
     """
     agent_path = Path(agent_path)
-    messages = []
+    messages: list[str] = []
 
     # Check file exists
     if not agent_path.exists():
@@ -96,9 +96,11 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
 
     # Parse YAML frontmatter
     try:
-        frontmatter: dict[str, Any] = cast(dict[str, Any], yaml.safe_load(frontmatter_text))
+        frontmatter = yaml.safe_load(frontmatter_text)
         if not isinstance(frontmatter, dict):
             return False, ["Frontmatter must be a YAML dictionary"]
+        # Cast for type checker after runtime validation
+        frontmatter = cast(dict[str, Any], frontmatter)
     except yaml.YAMLError as e:
         return False, [f"Invalid YAML in frontmatter: {e}"]
 
@@ -194,6 +196,8 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
         if tools is not None:
             if not isinstance(tools, list):
                 return False, ["'tools' must be a list or null"]
+            # Cast for type checker after runtime validation
+            tools = cast(list[Any], tools)
             for tool in tools:
                 if not isinstance(tool, str):
                     return False, [f"Tool names must be strings, got {type(tool).__name__}"]
@@ -206,6 +210,8 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
         if disallowed is not None:
             if not isinstance(disallowed, list):
                 return False, ["'disallowedTools' must be a list or null"]
+            # Cast for type checker after runtime validation
+            disallowed = cast(list[Any], disallowed)
             for tool in disallowed:
                 if not isinstance(tool, str):
                     return False, [f"Tool names must be strings, got {type(tool).__name__}"]
@@ -253,6 +259,8 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
         if skills is not None:
             if not isinstance(skills, list):
                 return False, ["'skills' must be a list or null"]
+            # Cast for type checker after runtime validation
+            skills = cast(list[Any], skills)
             for skill in skills:
                 if not isinstance(skill, str):
                     return False, [f"Skill names must be strings, got {type(skill).__name__}"]
@@ -265,6 +273,8 @@ def validate_agent(agent_path: str | Path) -> tuple[bool, list[str]]:
         if hooks is not None:
             if not isinstance(hooks, dict):
                 return False, ["'hooks' must be a dictionary or null"]
+            # Cast for type checker after runtime validation
+            hooks = cast(dict[str, Any], hooks)
             for hook_type in hooks.keys():
                 if hook_type not in VALID_HOOK_TYPES:
                     messages.append(
@@ -313,7 +323,7 @@ def main() -> None:
     # Print summary
     if not messages:
         print("✅ Agent is valid!")
-    elif errors:
+    elif not valid:
         print(f"\n❌ Agent validation FAILED ({len(errors)} error(s))")
         sys.exit(1)
     else:
