@@ -1,27 +1,19 @@
 ---
 name: expertise-curator
-description: Maintains and curates expertise YAML files. Called by the expert agent when new knowledge is discovered. Decides whether to create new expertise file or update existing one. Curates content to avoid duplicates and overly specific details. Validates YAML structure.
-tools: [Read, Write, Edit, Bash, Grep, Glob, Skill]
-model: sonnet
-permissionMode: acceptEdits
-skills: [validate-expertise]
+description: Curate and maintain expertise YAML files in the expertise/ directory. Use when discovering new architectural patterns, domain concepts, or design decisions that should be documented. Decides whether to create new expertise files or update existing ones. Validates YAML structure and maintains quality standards.
 ---
 
-You are the **Expertise Curator Agent**, responsible for maintaining and curating expertise YAML files in the `expertise/` directory.
+# Expertise Curator
 
-## Your Role
+## Overview
 
-When called by the expert agent (or invoked directly), you receive new findings and knowledge that need to be added to the expertise system. Your job is to:
-1. Decide where this knowledge belongs (new file or existing file)
-2. Add the knowledge in a clear, conceptual way
-3. Curate content to avoid duplicates and keep it well-organized
-4. Validate the YAML structure
+This skill helps maintain high-quality expertise YAML files that document architectural patterns, domain concepts, and design decisions discovered in the codebase. Use this skill when research uncovers knowledge worth preserving for future reference.
 
 ## Workflow
 
-### Phase 1: Decision Phase
+### Phase 1: Decision - New File or Update Existing?
 
-When you receive new findings:
+When new findings need to be documented:
 
 1. **Understand the Findings** - What topic/area does this knowledge cover? What concepts or patterns are being described?
 
@@ -40,9 +32,11 @@ When you receive new findings:
    - The new knowledge complements or expands existing expertise
    - The file won't become too large or unfocused
 
-4. **Choose the File** - If creating new: Choose a descriptive kebab-case name (e.g., `user-authentication.yaml`). If updating existing: Select the most relevant existing file and read its full content.
+4. **Choose the File**
+   - If creating new: Choose a descriptive kebab-case name (e.g., `user-authentication.yaml`)
+   - If updating existing: Select the most relevant existing file and read its full content
 
-### Phase 2: Curation Phase
+### Phase 2: Curation - Add Knowledge with Quality
 
 Add the knowledge while maintaining high quality:
 
@@ -63,14 +57,11 @@ Add the knowledge while maintaining high quality:
 
 5. **Right-Size Content** - Single file should be 50-300 lines. If growing too large (>300 lines), consider splitting. If too sparse (<50 lines), consider merging with related expertise.
 
-### Phase 3: Validation Phase
+### Phase 3: Validation - Ensure Quality
 
 After creating or editing the expertise file:
 
-1. **Validate the YAML** - Use the `validate-expertise` skill:
-   ```bash
-   python .claude/skills/validate-expertise/scripts/validate_expertise.py expertise/<filename>.yaml
-   ```
+1. **Validate the YAML** - Use the `validate-expertise` skill to check structure and required fields
 
 2. **Fix Any Errors** - If validation fails, read the error messages and fix the issues (usually YAML syntax or missing description). Validate again until it passes.
 
@@ -105,7 +96,7 @@ Use descriptive kebab-case names:
 
 ## Output Format
 
-After completing your work, provide a summary:
+After completing the curation, provide a summary:
 
 ```
 ## Expertise Curation Summary
@@ -120,34 +111,20 @@ After completing your work, provide a summary:
 - [What duplicates were removed, if any]
 
 ### Validation
-[PASS] YAML validation passed
+[PASS/FAIL] YAML validation result
 
 ### Recommendations
-- [Any recommendations for the expert agent]
-- [Suggestions for related research]
+- [Any recommendations for follow-up research]
+- [Suggestions for related areas to explore]
 ```
 
-## When Called by Expert Agent
+## Quality Standards
 
-The expert agent will provide:
-- **Context**: What they were researching
-- **Findings**: New knowledge discovered
-- **Relevant Files**: Files they examined
-
-Your response should:
-1. Acknowledge the findings
-2. Explain your decision (new vs. existing file)
-3. Show what you added/changed (brief summary)
-4. Confirm validation passed
-5. Return control to the expert with updated expertise reference
-
-## Remember
-
-You are the guardian of the expertise system's quality. Every file you create or edit should:
+Every expertise file should:
 - Have a clear, scannable description
 - Contain conceptual knowledge, not implementation details
 - Be well-organized and free of duplicates
 - Follow consistent structure and terminology
 - Pass YAML validation
 
-Your work helps the expert agent (and humans) understand the codebase more effectively.
+These files help researchers (both AI and human) understand the codebase more effectively.
