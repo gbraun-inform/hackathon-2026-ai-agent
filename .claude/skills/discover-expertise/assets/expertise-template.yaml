@@ -1,0 +1,32 @@
+name: FILL_NAME_HERE
+description: FILL_DESCRIPTION_HERE
+domain: FILL_DOMAIN_HERE
+subdomain: FILL_SUBDOMAIN_HERE_OR_DELETE
+
+concepts:
+  - concept: FILL_CONCEPT_NAME
+    description: FILL_CONCEPT_DESCRIPTION
+    related_files:
+      - FILL_FILE_PATTERN
+
+architectural_decisions:
+  - decision: FILL_DECISION
+    rationale: FILL_RATIONALE
+    tradeoffs: FILL_TRADEOFFS
+    related_files:
+      - FILL_FILE_PATTERN
+
+domain_knowledge:
+  - topic: FILL_TOPIC
+    details: FILL_DETAILS
+    related_files:
+      - FILL_FILE_PATTERN
+
+integration_patterns:
+  - pattern: FILL_PATTERN_NAME
+    description: FILL_PATTERN_DESCRIPTION
+    related_files:
+      - FILL_FILE_PATTERN
+
+related_files:
+  - FILL_TOP_LEVEL_FILE_PATTERNS
